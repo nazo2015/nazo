@@ -1,7 +1,7 @@
 class ListingsController < ApplicationController
   before_action :set_listing, only: [:show, :edit, :update, :destroy]
- # before_filter :authenticate_user, only: [:new, :create, :edit, :update, :destroy]
- # before_filter :check_user, only: [:edit, :update, :destroy]
+  before_filter :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
+  before_filter :check_user, only: [:edit, :update, :destroy]
 
   # GET /listings
   # GET /listings.json
@@ -75,9 +75,9 @@ class ListingsController < ApplicationController
       params.require(:listing).permit(:name, :description, :details, :image)
     end
     
-    #def check_user
-    #  if current_user != @listing.user_id
-    #   redirect_to root_url, alert: "Sorry you are not the Author of this post"
-    # end
-    # end
+    def check_user
+      if current_user != @listing.user_id
+       redirect_to root_url, alert: "Sorry you are not the author of this post"
+      end
+    end
 end
